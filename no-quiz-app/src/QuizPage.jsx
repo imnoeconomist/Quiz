@@ -575,6 +575,9 @@ const Quiz = ({ onQuizComplete, initialAnswers, initialQuestionIndex = 0 }) => {
 // --- COMPONENTE EmailCollectionPage (Mantido como no original) ---
 const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
+    const [whatsappDDI, setWhatsappDDI] = useState('+55');
     const [error, setError] = useState('');
     const emailInputRef = useRef(null);
     const [allocationSuggestionConsent, setAllocationSuggestionConsent] = useState('');
@@ -588,9 +591,54 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
         { id: 'p3', text: "Sua estratégia de hoje resiste a 5 anos de caos? " }
     ];
 
+    const ddiOptions = [
+        { value: '+55', label: '🇧🇷 +55 (Brasil)' },
+        { value: '+1', label: '🇺🇸 +1 (EUA/Canadá)' },
+        { value: '+44', label: '🇬🇧 +44 (Reino Unido)' },
+        { value: '+33', label: '🇫🇷 +33 (França)' },
+        { value: '+49', label: '🇩🇪 +49 (Alemanha)' },
+        { value: '+34', label: '🇪🇸 +34 (Espanha)' },
+        { value: '+39', label: '🇮🇹 +39 (Itália)' },
+        { value: '+31', label: '🇳🇱 +31 (Holanda)' },
+        { value: '+46', label: '🇸🇪 +46 (Suécia)' },
+        { value: '+47', label: '🇳🇴 +47 (Noruega)' },
+        { value: '+351', label: '🇵🇹 +351 (Portugal)' },
+        { value: '+54', label: '🇦🇷 +54 (Argentina)' },
+        { value: '+56', label: '🇨🇱 +56 (Chile)' },
+        { value: '+57', label: '🇨🇴 +57 (Colômbia)' },
+        { value: '+58', label: '🇻🇪 +58 (Venezuela)' },
+        { value: '+593', label: '🇪🇨 +593 (Equador)' },
+        { value: '+51', label: '🇵🇪 +51 (Peru)' },
+        { value: '+595', label: '🇵🇾 +595 (Paraguai)' },
+        { value: '+598', label: '🇺🇾 +598 (Uruguai)' }
+    ];
+
     useEffect(() => {
         emailInputRef.current?.focus();
     }, []);
+
+    // Função para formatar o número do WhatsApp
+    const formatWhatsApp = (value) => {
+        // Remove tudo que não for número
+        const numbers = value.replace(/\D/g, '');
+        
+        // Aplica formatação brasileira por padrão
+        if (whatsappDDI === '+55') {
+            if (numbers.length <= 2) return numbers;
+            if (numbers.length <= 6) return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+            if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+            if (numbers.length <= 11) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+            return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+        }
+        
+        // Para outros países, retorna apenas os números
+        return numbers;
+    };
+
+    const handleWhatsAppChange = (e) => {
+        const formatted = formatWhatsApp(e.target.value);
+        setWhatsapp(formatted);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -602,9 +650,19 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
             setError('Por favor, insira um e-mail válido.');
             return;
         }
+        if (!name.trim()) {
+            setError('Por favor, insira seu nome para prosseguir.');
+            return;
+        }
+        if (!whatsapp.trim()) {
+            setError('Por favor, insira seu WhatsApp para prosseguir.');
+            return;
+        }
         setError('');
         onSubmitEmail({
             email,
+            name: name.trim(),
+            whatsapp: whatsappDDI + whatsapp.replace(/\D/g, ''),
             allocationSuggestionConsent, 
             personalComment, 
             selectedProvocation: selectedProvocation ? provocations.find(p => p.id === selectedProvocation)?.text : '', 
@@ -615,6 +673,8 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
     const handleSkip = () => {
         const skipData = {
             email: email, 
+            name: name.trim(),
+            whatsapp: whatsappDDI + whatsapp.replace(/\D/g, ''),
             allocationSuggestionConsent: '',
             personalComment: '',
             selectedProvocation: '',
@@ -634,7 +694,7 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
                 <Mail size={48} className="mx-auto mb-4 text-[#CCCCCC]" />
                 <h2 className="font-pixel-bold text-2xl md:text-3xl text-white mb-2">Quase lá!</h2>
                 <p className="font-sans text-lg text-[#E3E5E7] mb-6">
-                    Para receber seu diagnóstico e novidades, informe seu e-mail. As perguntas abaixo são opcionais.
+                    Para receber seu diagnóstico e novidades, informe seus dados de contato. As perguntas abaixo são opcionais.
                 </p>
             </div>
             <form onSubmit={handleSubmit} className="max-w-xl mx-auto text-left space-y-4">
@@ -650,6 +710,44 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
                         className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
                     />
                     {error && <p className="text-red-400 text-sm mt-1 text-center">{error}</p>}
+                </div>
+                <div>
+                    <label htmlFor="name" className="font-sans text-sm text-[#CCCCCC] mb-1 block">Seu nome completo:*</label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Seu nome completo"
+                        className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="whatsapp" className="font-sans text-sm text-[#CCCCCC] mb-1 block">Seu WhatsApp:*</label>
+                    <div className="flex gap-2">
+                        <select
+                            value={whatsappDDI}
+                            onChange={(e) => setWhatsappDDI(e.target.value)}
+                            className="font-sans p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none min-w-[120px]"
+                        >
+                            {ddiOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                        <input
+                            id="whatsapp"
+                            type="tel"
+                            value={whatsapp}
+                            onChange={handleWhatsAppChange}
+                            placeholder={whatsappDDI === '+55' ? "(11) 99999-9999" : "999999999"}
+                            className="font-sans flex-1 p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                        />
+                    </div>
+                    <p className="font-sans text-xs text-[#A0A0A0] mt-1">
+                        {whatsappDDI === '+55' ? 'Formato: (11) 99999-9999' : 'Apenas números'}
+                    </p>
                 </div>
                 <div>
                     <label className="font-sans text-sm text-[#CCCCCC] mb-2 block">Você gostaria de receber sugestões de ajustes na sua alocação? (Opcional) </label>
@@ -726,7 +824,7 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
                 </div>
             </form>
              <p className="font-sans text-xs text-[#A0A0A0] mt-8 text-center">
-                Respeitamos sua privacidade. Seu e-mail não será compartilhado.
+                Respeitamos sua privacidade. Seus dados não serão compartilhados.
             </p>
         </div>
     );
@@ -1072,6 +1170,7 @@ const QuizPageController = () => {
     };
     
     try {
+      // Enviar para o Cloudflare Worker (mantido como estava)
       const response = await fetch(CLOUDFLARE_WORKER_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
@@ -1089,6 +1188,32 @@ const QuizPageController = () => {
           submissionId: result.submissionId || result.id,
           sessionId: result.sessionId
       });
+
+      // NOVO: Enviar para o webhook do n8n
+      const webhookPayload = {
+        numero: followUpFormData.whatsapp, // DDI + número formatado
+        nome: followUpFormData.name,
+        codigo_arquetipo: coreQuizData.determinedArchetypeKey, // Código do arquétipo (EXEC, PDF, etc.)
+        email: followUpFormData.email,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const webhookResponse = await fetch('https://n8n.sof.to/webhook/form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(webhookPayload),
+        });
+
+        if (webhookResponse.ok) {
+          console.log("Dados enviados para o webhook n8n com sucesso!");
+        } else {
+          console.warn("Aviso: Falha ao enviar para o webhook n8n:", webhookResponse.statusText);
+        }
+      } catch (webhookError) {
+        console.warn("Aviso: Erro ao enviar para o webhook n8n:", webhookError);
+        // Não bloqueia o fluxo principal se o webhook falhar
+      }
 
     } catch (error) {
       console.error("Falha na requisição para o Cloudflare:", error);
