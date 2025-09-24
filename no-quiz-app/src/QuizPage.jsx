@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HelpCircle, ArrowRight, RefreshCw, ChevronLeft, FileText, Rocket, Mail, CheckSquare, Square, Menu, UserCircle, Star, Settings, LogOut } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import { useLocation, useNavigate } from 'react-router-dom'; // Não mais necessário
 import Boletim from './assets/Boletim.png';
 import Caos from './assets/Caos.png';
 import Causa from './assets/Causa.png';
@@ -210,16 +210,14 @@ const quizData = {
     // ... (Perguntas do quiz mantidas como no original, sem alterações aqui)
     {
       id: 1,
-      text: "Onde está investido a maior parte do seu dinheiro hoje? ",
+      text: "Qual seu MAIOR objetivo ao investir hoje? ",
       type: 'single',
       options: [
-        { id: "a", text: "Poupança ", points: { refem_do_pix: 2, filho_do_trauma: 2, estagiario_do_proprio_dinheiro: 1, conservador_da_renda_fixa: 1 } },
-        { id: "b", text: "CDB / Tesouro Direto ", points: { conservador_da_renda_fixa: 3, filho_do_trauma: 2, refem_do_pix: 1 } },
-        { id: "c", text: "Fundos de investimento diversos ", points: { estagiario_do_proprio_dinheiro: 1, executor_sem_causa: 1, curador_videos_youtube: 1 } },
-        { id: "d", text: "Ações no Brasil ", points: { executor_sem_causa: 2, socio_da_euforia: 2, visionario_que_nao_viu_o_boletim: 1 } },
-        { id: "e", text: "Criptomoedas ", points: { socio_da_euforia: 3, executor_sem_causa: 2, a_viuva_do_bitcoin: 1 } },
-        { id: "f", text: "Dólar / Ativos fora do Brasil ", points: { forasteiro_financeiro: 3, executor_sem_causa: 1 } },
-        { id: "g", text: "Não invisto ainda ou quase nada ", points: { estagiario_do_proprio_dinheiro: 3, refem_do_pix: 2, curador_videos_youtube: 1 } },
+        { id: "a", text: "Ter paz financeira e segurança para o futuro. ", points: { filho_do_trauma: 2, conservador_da_renda_fixa: 2, entusiasta_exausto: 1 } },
+        { id: "b", text: "Me aposentar cedo ou alcançar independência financeira o quanto antes. ", points: { visionario_que_nao_viu_o_boletim: 2, executor_sem_causa:1, forasteiro_financeiro: 1 } },
+        { id: "c", text: "Construir e aumentar meu patrimônio consistentemente. ", points: { forasteiro_financeiro: 1, executor_sem_causa: 1, visionario_que_nao_viu_o_boletim: 1, curador_videos_youtube:1 } },
+        { id: "d", text: "Comprar um imóvel (casa/apartamento) ou sair do aluguel. ", points: { refem_do_pix: 2, estagiario_do_proprio_dinheiro:1, entusiasta_exausto:1 } },
+        { id: "e", text: "Ganhar liberdade geográfica, poder viver/trabalhar de onde quiser. ", points: { forasteiro_financeiro: 3, visionario_que_nao_viu_o_boletim: 3, socio_da_euforia:1 } },
       ],
     },
     {
@@ -310,7 +308,7 @@ const quizData = {
     },
       {
       id: 9,
-      text: "Como você vê o momento atual da economia brasileira (abril 2025)? ",
+      text: "Como você vê o momento atual da economia brasileira? ",
       type: 'single',
       options: [
         { id: "a", text: "Um caos: juros altos, desconfiança, dólar instável. ", points: { forasteiro_financeiro: 3, filho_do_trauma: 2, conservador_da_renda_fixa: 1 } },
@@ -333,13 +331,13 @@ const quizData = {
     },
     {
       id: 11,
-      text: "Em qual faixa de idade você se encontra ou qual geração melhor te representa (considerando o ano de 2025)? ",
+      text: "Em qual faixa de idade você se encontra?",
       type: 'single',
       options: [
-        { id: "a", text: "Geração Z (nascidos a partir de 1997, com até ~28 anos em 2025)", points: { estagiario_do_proprio_dinheiro: 1, socio_da_euforia: 1, visionario_que_nao_viu_o_boletim: 1, refem_do_pix:1 } },
-        { id: "b", text: "Millennials / Geração Y (nascidos entre 1981-1996, com ~29 a 44 anos em 2025)", points: { entusiasta_exausto:1, forasteiro_financeiro: 1, curador_videos_youtube:1, executor_sem_causa:1 } },
-        { id: "c", text: "Geração X (nascidos entre 1965-1980, com ~45 a 60 anos em 2025)", points: { forasteiro_financeiro: 2, filho_do_trauma: 1, colecionador_de_pdf: 1, conservador_da_renda_fixa:1 } },
-        { id: "d", text: "Baby Boomers ou mais velhos (nascidos antes de 1965, com mais de 60 anos em 2025)", points: { filho_do_trauma: 3, conservador_da_renda_fixa: 2 } },
+        { id: "a", text: "Até 28 anos", points: { estagiario_do_proprio_dinheiro: 1, socio_da_euforia: 1, visionario_que_nao_viu_o_boletim: 1, refem_do_pix:1 } },
+        { id: "b", text: "29 a 44 anos", points: { entusiasta_exausto:1, forasteiro_financeiro: 1, curador_videos_youtube:1, executor_sem_causa:1 } },
+        { id: "c", text: "45 a 60 anos", points: { forasteiro_financeiro: 2, filho_do_trauma: 1, colecionador_de_pdf: 1, conservador_da_renda_fixa:1 } },
+        { id: "d", text: "Mais de 60 anos", points: { filho_do_trauma: 3, conservador_da_renda_fixa: 2 } },
       ],
     },
     {
@@ -356,14 +354,16 @@ const quizData = {
     },
     {
       id: 13,
-      text: "Qual seu MAIOR objetivo ao investir hoje? ",
+      text: "Onde está investido a maior parte do seu dinheiro hoje? ",
       type: 'single',
       options: [
-        { id: "a", text: "Ter paz financeira e segurança para o futuro. ", points: { filho_do_trauma: 2, conservador_da_renda_fixa: 2, entusiasta_exausto: 1 } },
-        { id: "b", text: "Me aposentar cedo ou alcançar independência financeira o quanto antes. ", points: { visionario_que_nao_viu_o_boletim: 2, executor_sem_causa:1, forasteiro_financeiro: 1 } },
-        { id: "c", text: "Construir e aumentar meu patrimônio consistentemente. ", points: { forasteiro_financeiro: 1, executor_sem_causa: 1, visionario_que_nao_viu_o_boletim: 1, curador_videos_youtube:1 } },
-        { id: "d", text: "Comprar um imóvel (casa/apartamento) ou sair do aluguel. ", points: { refem_do_pix: 2, estagiario_do_proprio_dinheiro:1, entusiasta_exausto:1 } },
-        { id: "e", text: "Ganhar liberdade geográfica, poder viver/trabalhar de onde quiser. ", points: { forasteiro_financeiro: 3, visionario_que_nao_viu_o_boletim: 3, socio_da_euforia:1 } },
+        { id: "a", text: "Poupança ", points: { refem_do_pix: 2, filho_do_trauma: 2, estagiario_do_proprio_dinheiro: 1, conservador_da_renda_fixa: 1 } },
+        { id: "b", text: "CDB / Tesouro Direto ", points: { conservador_da_renda_fixa: 3, filho_do_trauma: 2, refem_do_pix: 1 } },
+        { id: "c", text: "Fundos de investimento diversos ", points: { estagiario_do_proprio_dinheiro: 1, executor_sem_causa: 1, curador_videos_youtube: 1 } },
+        { id: "d", text: "Ações no Brasil ", points: { executor_sem_causa: 2, socio_da_euforia: 2, visionario_que_nao_viu_o_boletim: 1 } },
+        { id: "e", text: "Criptomoedas ", points: { socio_da_euforia: 3, executor_sem_causa: 2, a_viuva_do_bitcoin: 1 } },
+        { id: "f", text: "Dólar / Ativos fora do Brasil ", points: { forasteiro_financeiro: 3, executor_sem_causa: 1 } },
+        { id: "g", text: "Não invisto ainda ou quase nada ", points: { estagiario_do_proprio_dinheiro: 3, refem_do_pix: 2, curador_videos_youtube: 1 } },
       ],
     },
   ],
@@ -373,7 +373,7 @@ const quizData = {
 const Quiz = ({ onQuizComplete, initialAnswers, initialQuestionIndex = 0 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(initialQuestionIndex);
   const [answers, setAnswers] = useState(initialAnswers || {});
-  const [startTime, setStartTime] = useState(Date.now());
+  const [startTime] = useState(Date.now());
   const [questionTimings, setQuestionTimings] = useState({});
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
@@ -421,7 +421,7 @@ const Quiz = ({ onQuizComplete, initialAnswers, initialQuestionIndex = 0 }) => {
         selectedOptionsObjects.forEach(chosenOption => {
           if (chosenOption && chosenOption.points) {
             for (const archetypeKey in chosenOption.points) {
-              if (scores.hasOwnProperty(archetypeKey)) {
+              if (Object.prototype.hasOwnProperty.call(scores, archetypeKey)) {
                 scores[archetypeKey] += chosenOption.points[archetypeKey];
               }
             }
@@ -439,7 +439,7 @@ const Quiz = ({ onQuizComplete, initialAnswers, initialQuestionIndex = 0 }) => {
 
         if (selectedOptionObject && selectedOptionObject.points) {
           for (const archetypeKey in selectedOptionObject.points) {
-            if (scores.hasOwnProperty(archetypeKey)) {
+            if (Object.prototype.hasOwnProperty.call(scores, archetypeKey)) {
               scores[archetypeKey] += selectedOptionObject.points[archetypeKey];
             }
           }
@@ -573,7 +573,7 @@ const Quiz = ({ onQuizComplete, initialAnswers, initialQuestionIndex = 0 }) => {
 
 
 // --- COMPONENTE EmailCollectionPage (Mantido como no original) ---
-const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
+const EmailCollectionPage = ({ onSubmitEmail }) => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
@@ -669,24 +669,24 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
             provocationResponse 
         });
     };
-    
-    const handleSkip = () => {
-        const skipData = {
-            email: email, 
-            name: name.trim(),
-            whatsapp: whatsappDDI + whatsapp.replace(/\D/g, ''),
-            allocationSuggestionConsent: '',
-            personalComment: '',
-            selectedProvocation: '',
-            provocationResponse: ''
-        };
-        if (email && !/\S+@\S+\.\S+/.test(email)) {
-             setError('Se for pular, deixe o e-mail em branco ou insira um e-mail válido.');
-             return;
-        }
-        setError('');
-        onSkip(skipData);
-    }
+
+    // const handleSkip = () => {
+    //     const skipData = {
+    //         email: email,
+    //         name: name.trim(),
+    //         whatsapp: whatsappDDI + whatsapp.replace(/\D/g, ''),
+    //         allocationSuggestionConsent: '',
+    //         personalComment: '',
+    //         selectedProvocation: '',
+    //         provocationResponse: ''
+    //     };
+    //     if (email && !/\S+@\S+\.\S+/.test(email)) {
+    //          setError('Se for pular, deixe o e-mail em branco ou insira um e-mail válido.');
+    //          return;
+    //     }
+    //     setError('');
+    //     onSkip(skipData);
+    // }
 
     return (
         <div className="bg-[#231F20] p-6 md:p-8 rounded-lg shadow-xl max-w-xl mx-auto w-full">
@@ -833,14 +833,14 @@ const EmailCollectionPage = ({ onSubmitEmail, onSkip }) => {
 // --- MODIFICAÇÃO: Componente AppHeader (Menu Superior) ---
 const AppHeader = () => {
     // No futuro, este estado pode vir de um contexto ou props se o menu for mais dinâmico
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Função para simular navegação ou abrir modais
-    const handleMenuAction = (action) => {
-        console.log(`Menu Action: ${action}`);
-        // Exemplo: if (action === 'profile') router.push('/profile');
-        setIsMenuOpen(false); // Fecha o menu após uma ação (se for um dropdown)
-    };
+    // const handleMenuAction = (action) => {
+    //     console.log(`Menu Action: ${action}`);
+    //     // Exemplo: if (action === 'profile') router.push('/profile');
+    //     setIsMenuOpen(false); // Fecha o menu após uma ação (se for um dropdown)
+    // };
     
     return (
         <header className="fixed-menu">
@@ -856,50 +856,7 @@ const AppHeader = () => {
     );
 };
 
-// Função auxiliar para converter uma string SVG em um Blob PNG
-const convertSvgToPngBlob = (svgString, targetWidth, targetHeight) => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-
-    // Cria um Data URL para o SVG para que possa ser usado como src da imagem
-    // Isso também ajuda a lidar com SVGs que podem ter referências externas ou estilos complexos
-    // se o SVG for bem formado e auto-contido.
-    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-
-    img.onload = () => {
-      URL.revokeObjectURL(url); // Libera o URL do objeto SVG após o carregamento
-
-      const canvas = document.createElement('canvas');
-      // Define as dimensões do canvas. Idealmente, use as dimensões pretendidas para o card.
-      // O card do diagnóstico geralmente tem dimensões como 1200x630 (padrão Open Graph)
-      canvas.width = targetWidth || img.naturalWidth || 1200;
-      canvas.height = targetHeight || img.naturalHeight || 630;
-
-      const ctx = canvas.getContext('2d');
-      // Preenche o fundo com branco se o SVG puder ter transparência e você quiser um fundo opaco
-      // ctx.fillStyle = '#FFFFFF';
-      // ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob((pngBlob) => {
-        if (pngBlob) {
-          resolve(pngBlob);
-        } else {
-          reject(new Error('Falha ao converter canvas para Blob PNG.'));
-        }
-      }, 'image/png');
-    };
-
-    img.onerror = (error) => {
-      URL.revokeObjectURL(url);
-      console.error("Erro ao carregar SVG na tag <img>:", error);
-      reject(new Error('Erro ao carregar SVG para conversão. O SVG pode estar malformado ou conter erros.'));
-    };
-
-    img.src = url;
-  });
-};
+// Função auxiliar removida - não utilizada
 
 const ShareComponent = ({ sessionId, archetype }) => {
   const IMAGE_WORKER_URL = "https://gerador-card-quiz-long-term-d60b.imnoeconomist-dev.workers.dev";
@@ -975,27 +932,6 @@ const ShareComponent = ({ sessionId, archetype }) => {
 
 const ResultsPage = ({ archetype, onRestart, quizResultDataForBackend, sessionId }) => {
   const [showShareModal, setShowShareModal] = useState(false);
-  const handleDownloadPdf = () => {
-    console.log(`Simulação de Download do PDF para o perfil: ${archetype.name}`);
-    const modal = document.createElement('div');
-    modal.style.position = 'fixed'; modal.style.left = '0'; modal.style.top = '0';
-    modal.style.width = '100%'; modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0,0,0,0.5)'; modal.style.display = 'flex';
-    modal.style.justifyContent = 'center'; modal.style.alignItems = 'center';
-    modal.style.zIndex = '1000';
-    modal.innerHTML = `
-      <div style="background: #231F20; color: #E3E5E7; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 90%; width: 300px;">
-        <p style="font-size: 1.1em;">Simulação de Download do PDF para:</p>
-        <p style="font-family: 'Press Start 2P', cursive; color: #CCCCCC; font-size: 1.2em; margin: 10px 0;">${archetype.name}</p>
-        <p style="font-size: 0.8em;">(Esta funcionalidade seria implementada no servidor)</p>
-        <button id="closeModalBtn" style="margin-top: 20px; padding: 10px 18px; background: #CCCCCC; color: black; border: none; border-radius: 5px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 0.8em;">Fechar</button>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    document.getElementById('closeModalBtn').onclick = () => {
-      document.body.removeChild(modal);
-    };
-  };
 
   // Note que o botão só aparece se o sessionId já foi recebido.
   const shareButton = sessionId ? (
@@ -1032,7 +968,7 @@ const ResultsPage = ({ archetype, onRestart, quizResultDataForBackend, sessionId
         <div className="flex flex-col md:flex-row gap-8 mb-8 items-center justify-center">
           <div className="mb-8">
               <img 
-                  src={archetype.image || testeImage} // Usa a imagem do arquétipo ou o placeholder
+                  src={archetype.image || Estag} // Usa a imagem do arquétipo ou o placeholder
                   alt={`[Imagem do arquétipo ${archetype.name}]`}
                   className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-md object-cover border-4 border-[#CCCCCC]" 
               />
@@ -1086,12 +1022,6 @@ const ResultsPage = ({ archetype, onRestart, quizResultDataForBackend, sessionId
             Este é um resumo inicial. Um diagnóstico completo e mais detalhado estará disponível no seu dashboard personalizado.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-8">
-            <button 
-              onClick={handleDownloadPdf}
-              className="font-pixel-bold bg-[#CCCCCC] text-black px-4 py-3 rounded-md text-md hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-md w-full sm:w-auto pixel-button"
-            >
-              BAIXAR DIAGNÓSTICO (PDF)
-            </button>
             {shareButton}
             <button
               onClick={onRestart}
@@ -1139,12 +1069,319 @@ const ResultsPage = ({ archetype, onRestart, quizResultDataForBackend, sessionId
   );
 };
 
+// Componente para coleta de dados adicionais (após o quiz)
+const AdditionalDataCollection = ({ onDataSubmitted }) => {
+    const [allocationSuggestionConsent, setAllocationSuggestionConsent] = useState('');
+    const [personalComment, setPersonalComment] = useState('');
+    const [selectedProvocation, setSelectedProvocation] = useState('');
+    const [provocationResponse, setProvocationResponse] = useState('');
+
+    const provocations = [
+        { id: 'p1', text: "Você investe com medo ou com convicção? " },
+        { id: 'p2', text: "Se você fosse gestor de um fundo, você deixaria seu 'eu atual' cuidar da sua carteira? " },
+        { id: 'p3', text: "Sua estratégia de hoje resiste a 5 anos de caos? " }
+    ];
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onDataSubmitted({
+            allocationSuggestionConsent,
+            personalComment,
+            selectedProvocation: selectedProvocation ? provocations.find(p => p.id === selectedProvocation)?.text : '',
+            provocationResponse
+        });
+    };
+
+    const handleSkip = () => {
+        onDataSubmitted({
+            allocationSuggestionConsent: '',
+            personalComment: '',
+            selectedProvocation: '',
+            provocationResponse: ''
+        });
+    };
+
+    return (
+        <div className="bg-[#231F20] p-6 md:p-8 rounded-lg shadow-xl max-w-xl mx-auto w-full">
+            <div className="max-w-xl mx-auto text-center mb-6">
+                <Mail size={48} className="mx-auto mb-4 text-[#CCCCCC]" />
+                <h2 className="font-pixel-bold text-2xl md:text-3xl text-white mb-2">Quase lá!</h2>
+                <p className="font-sans text-lg text-[#E3E5E7] mb-6">
+                    Para personalizar ainda mais seu diagnóstico, você pode responder as perguntas abaixo (todas opcionais).
+                </p>
+            </div>
+            <form onSubmit={handleSubmit} className="max-w-xl mx-auto text-left space-y-4">
+                <div>
+                    <label className="font-sans text-sm text-[#CCCCCC] mb-2 block">Você gostaria de receber sugestões de ajustes na sua alocação? (Opcional) </label>
+                    <div className="space-y-2">
+                        {[
+                            { value: 'sim', label: 'Sim ' },
+                            { value: 'sim_realidade', label: 'Sim, desde que respeite minha realidade ' },
+                            { value: 'nao', label: 'Não ' }
+                        ].map(option => (
+                            <label key={option.value} className="flex items-center font-sans text-[#E3E5E7] cursor-pointer hover:text-white">
+                                <input
+                                    type="radio"
+                                    name="allocationSuggestion"
+                                    value={option.value}
+                                    checked={allocationSuggestionConsent === option.value}
+                                    onChange={(e) => setAllocationSuggestionConsent(e.target.value)}
+                                    className="mr-2 h-4 w-4 accent-[#CCCCCC] cursor-pointer"
+                                />
+                                {option.label}
+                            </label>
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="personalComment" className="font-sans text-sm text-[#CCCCCC] mb-1 block">
+                        Quer deixar um comentário pessoal pra tornar sua análise ainda mais certeira? (Opcional)
+                    </label>
+                    <textarea
+                        id="personalComment"
+                        value={personalComment}
+                        onChange={(e) => setPersonalComment(e.target.value)}
+                        placeholder="Seu comentário aqui..."
+                        rows="3"
+                        className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                    />
+                </div>
+                <div className="p-4 border border-[#4A4A4A] rounded-md">
+                    <label className="font-sans text-sm text-[#CCCCCC] mb-2 block">
+                        Reflexão Opcional: Escolha uma provocação e responda com sinceridade.
+                    </label>
+                    <div className="space-y-2 mb-3">
+                        {provocations.map(provocation => (
+                            <label key={provocation.id} className="flex items-center font-sans text-[#E3E5E7] cursor-pointer hover:text-white">
+                                <input
+                                    type="radio"
+                                    name="selectedProvocation"
+                                    value={provocation.id}
+                                    checked={selectedProvocation === provocation.id}
+                                    onChange={(e) => setSelectedProvocation(e.target.value)}
+                                    className="mr-2 h-4 w-4 accent-[#CCCCCC] cursor-pointer"
+                                />
+                                {provocation.text}
+                            </label>
+                        ))}
+                    </div>
+                    {selectedProvocation && (
+                        <textarea
+                            id="provocationResponse"
+                            value={provocationResponse}
+                            onChange={(e) => setProvocationResponse(e.target.value)}
+                            placeholder="Sua resposta à provocação selecionada..."
+                            rows="3"
+                            className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none mt-2"
+                        />
+                    )}
+                </div>
+                <div className="flex justify-center gap-4 mt-6">
+                    <button
+                        type="button"
+                        onClick={handleSkip}
+                        className="font-sans text-[#CCCCCC] px-6 py-3 rounded-md hover:text-white transition-colors duration-200"
+                    >
+                        Pular
+                    </button>
+                    <button
+                        type="submit"
+                        className="font-sans bg-[#CCCCCC] text-black px-8 py-3 rounded-md hover:bg-white transition-colors duration-200 font-semibold pixel-button"
+                    >
+                        VER MEU DIAGNÓSTICO
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+// Componente para coleta inicial de dados (antes do quiz)
+const InitialDataCollection = ({ onDataSubmitted }) => {
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
+    const [whatsappDDI, setWhatsappDDI] = useState('+55');
+    const [error, setError] = useState('');
+    const emailInputRef = useRef(null);
+
+    const ddiOptions = [
+        { value: '+55', label: '🇧🇷 +55 (Brasil)' },
+        { value: '+1', label: '🇺🇸 +1 (EUA/Canadá)' },
+        { value: '+44', label: '🇬🇧 +44 (Reino Unido)' },
+        { value: '+33', label: '🇫🇷 +33 (França)' },
+        { value: '+49', label: '🇩🇪 +49 (Alemanha)' },
+        { value: '+34', label: '🇪🇸 +34 (Espanha)' },
+        { value: '+39', label: '🇮🇹 +39 (Itália)' },
+        { value: '+31', label: '🇳🇱 +31 (Holanda)' },
+        { value: '+46', label: '🇸🇪 +46 (Suécia)' },
+        { value: '+47', label: '🇳🇴 +47 (Noruega)' },
+        { value: '+351', label: '🇵🇹 +351 (Portugal)' },
+        { value: '+54', label: '🇦🇷 +54 (Argentina)' },
+        { value: '+56', label: '🇨🇱 +56 (Chile)' },
+        { value: '+57', label: '🇨🇴 +57 (Colômbia)' },
+        { value: '+58', label: '🇻🇪 +58 (Venezuela)' },
+        { value: '+593', label: '🇪🇨 +593 (Equador)' },
+        { value: '+51', label: '🇵🇪 +51 (Peru)' },
+        { value: '+595', label: '🇵🇾 +595 (Paraguai)' },
+        { value: '+598', label: '🇺🇾 +598 (Uruguai)' }
+    ];
+
+    useEffect(() => {
+        emailInputRef.current?.focus();
+    }, []);
+
+    // Função para formatar o número do WhatsApp
+    const formatWhatsApp = (value) => {
+        const numbers = value.replace(/\D/g, '');
+
+        if (whatsappDDI === '+55') {
+            if (numbers.length <= 2) return numbers;
+            if (numbers.length <= 6) return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+            if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+            if (numbers.length <= 11) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+            return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+        }
+
+        return numbers;
+    };
+
+    const handleWhatsAppChange = (e) => {
+        const formatted = formatWhatsApp(e.target.value);
+        setWhatsapp(formatted);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!email) {
+            setError('Por favor, insira seu e-mail para prosseguir.');
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            setError('Por favor, insira um e-mail válido.');
+            return;
+        }
+        if (!name.trim()) {
+            setError('Por favor, insira seu nome para prosseguir.');
+            return;
+        }
+        if (!whatsapp.trim()) {
+            setError('Por favor, insira seu WhatsApp para prosseguir.');
+            return;
+        }
+        setError('');
+        onDataSubmitted({
+            email,
+            name: name.trim(),
+            whatsapp: whatsappDDI + whatsapp.replace(/\D/g, '')
+        });
+    };
+
+    return (
+        <div className="bg-[#231F20] p-6 md:p-8 rounded-lg shadow-xl max-w-xl mx-auto w-full">
+            <div className="max-w-xl mx-auto text-center mb-6">
+                <HelpCircle size={48} className="mx-auto mb-4 text-[#CCCCCC]" />
+                <h2 className="font-pixel-bold text-2xl md:text-3xl text-white mb-2">Antes de começar</h2>
+                <p className="font-sans text-lg text-[#E3E5E7] mb-6">
+                    Para recebermos seus resultados, precisamos de algumas informações básicas.
+                </p>
+            </div>
+            <form onSubmit={handleSubmit} className="max-w-xl mx-auto text-left space-y-4">
+                <div>
+                    <label htmlFor="email" className="font-sans text-sm text-[#CCCCCC] mb-1 block">Seu melhor e-mail:*</label>
+                    <input
+                        ref={emailInputRef}
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="seu.email@exemplo.com"
+                        className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="name" className="font-sans text-sm text-[#CCCCCC] mb-1 block">Seu nome completo:*</label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Seu nome completo"
+                        className="font-sans w-full p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="whatsapp" className="font-sans text-sm text-[#CCCCCC] mb-1 block">Seu WhatsApp:*</label>
+                    <div className="flex gap-2">
+                        <select
+                            value={whatsappDDI}
+                            onChange={(e) => setWhatsappDDI(e.target.value)}
+                            className="font-sans p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none min-w-[120px]"
+                        >
+                            {ddiOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                        <input
+                            id="whatsapp"
+                            type="tel"
+                            value={whatsapp}
+                            onChange={handleWhatsAppChange}
+                            placeholder={whatsappDDI === '+55' ? "(11) 99999-9999" : "999999999"}
+                            className="font-sans flex-1 p-3 rounded-md bg-[#2A2A2A] text-white border border-[#4A4A4A] focus:ring-2 focus:ring-[#CCCCCC] outline-none"
+                        />
+                    </div>
+                    <p className="font-sans text-xs text-[#A0A0A0] mt-1">
+                        {whatsappDDI === '+55' ? 'Formato: (11) 99999-9999' : 'Apenas números'}
+                    </p>
+                </div>
+                {error && <p className="text-red-400 text-sm mt-1 text-center">{error}</p>}
+                <div className="flex justify-center mt-6">
+                    <button
+                        type="submit"
+                        className="font-sans bg-[#CCCCCC] text-black px-8 py-3 rounded-md hover:bg-white transition-colors duration-200 font-semibold pixel-button"
+                    >
+                        Começar Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
 const QuizPageController = () => {
-  const [quizState, setQuizState] = useState('quiz'); // MODIFICAÇÃO: Iniciar diretamente no quiz
+  const [quizState, setQuizState] = useState('initialData'); // Começar com coleta de dados
+  const [initialUserData, setInitialUserData] = useState(null);
   const [resultIds, setResultIds] = useState({ submissionId: null, sessionId: null });
   const [finalArchetype, setFinalArchetype] = useState(null);
   const [quizResultDataForBackend, setQuizResultDataForBackend] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Feedback de loading
+  const [, setIsSubmitting] = useState(false); // Feedback de loading
+
+  // Função para lidar com dados iniciais
+  const handleInitialDataSubmitted = (userData) => {
+    setInitialUserData(userData);
+    setQuizState('quiz');
+  };
+
+  // Função para lidar com dados adicionais
+  const handleAdditionalDataSubmitted = async (additionalData) => {
+    if (quizResultDataForBackend && finalArchetype) {
+      // Combinar dados iniciais com dados adicionais
+      const completeUserData = {
+        ...initialUserData,
+        ...additionalData
+      };
+
+      await sendQuizDataToCloudflare(
+        quizResultDataForBackend,
+        completeUserData,
+        quizResultDataForBackend.userProfileData
+      );
+      setQuizState('results');
+    }
+  };
 
   // A URL do seu worker de dados
   const CLOUDFLARE_WORKER_ENDPOINT = "https://imnosupabase.imnoeconomist-dev.workers.dev/"; 
@@ -1153,23 +1390,39 @@ const QuizPageController = () => {
   const sendQuizDataToCloudflare = async (coreQuizData, followUpFormData, userProfileData) => {
     setIsSubmitting(true);
     const sessionId = crypto.randomUUID ? crypto.randomUUID() : `session-${Date.now()}-${Math.random().toString(36).substring(2,15)}`;
-    
+
+    // Verificar se estamos em desenvolvimento (localhost)
+    const isDevelopment = window.location.hostname === 'localhost';
+
     const payloadToCloudflare = {
       sessionId,
       timestamp: new Date().toISOString(),
       quizVersion: "3.2_Final_Two_Workers",
-      userEmail: followUpFormData.email, 
-      quizCoreData: coreQuizData, 
-      followUpData: { 
-        allocationSuggestionConsent: followUpFormData.allocationSuggestionConsent,
-        personalComment: followUpFormData.personalComment,
-        selectedProvocation: followUpFormData.selectedProvocation,
-        provocationResponse: followUpFormData.provocationResponse,
+      userEmail: initialUserData?.email || followUpFormData?.email,
+      quizCoreData: coreQuizData,
+      followUpData: {
+        allocationSuggestionConsent: followUpFormData?.allocationSuggestionConsent || '',
+        personalComment: followUpFormData?.personalComment || '',
+        selectedProvocation: followUpFormData?.selectedProvocation || '',
+        provocationResponse: followUpFormData?.provocationResponse || '',
       },
       userProfileData: userProfileData
     };
-    
+
     try {
+      if (isDevelopment) {
+        // Em modo de desenvolvimento, apenas logar os dados
+        console.log('🔧 MODO DESENVOLVIMENTO: Dados que seriam enviados para o Cloudflare Worker:', payloadToCloudflare);
+
+        // Simular resultado do worker
+        setResultIds({
+          submissionId: `dev-${sessionId}`,
+          sessionId: sessionId
+        });
+
+        setIsSubmitting(false);
+        return;
+      }
       // Enviar para o Cloudflare Worker (mantido como estava)
       const response = await fetch(CLOUDFLARE_WORKER_ENDPOINT, {
         method: 'POST',
@@ -1191,28 +1444,32 @@ const QuizPageController = () => {
 
       // NOVO: Enviar para o webhook do n8n
       const webhookPayload = {
-        numero: followUpFormData.whatsapp, // DDI + número formatado
-        nome: followUpFormData.name,
+        numero: initialUserData?.whatsapp || followUpFormData?.whatsapp, // DDI + número formatado
+        nome: initialUserData?.name || followUpFormData?.name,
         codigo_arquetipo: coreQuizData.determinedArchetypeKey, // Código do arquétipo (EXEC, PDF, etc.)
-        email: followUpFormData.email,
+        email: initialUserData?.email || followUpFormData?.email,
         timestamp: new Date().toISOString()
       };
 
-      try {
-        const webhookResponse = await fetch('https://n8n.sof.to/webhook/form', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(webhookPayload),
-        });
+      if (isDevelopment) {
+        console.log('🔧 MODO DESENVOLVIMENTO: Dados que seriam enviados para o webhook N8N:', webhookPayload);
+      } else {
+        try {
+          const webhookResponse = await fetch('https://n8n.sof.to/webhook/form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(webhookPayload),
+          });
 
-        if (webhookResponse.ok) {
-          console.log("Dados enviados para o webhook n8n com sucesso!");
-        } else {
-          console.warn("Aviso: Falha ao enviar para o webhook n8n:", webhookResponse.statusText);
+          if (webhookResponse.ok) {
+            console.log("Dados enviados para o webhook n8n com sucesso!");
+          } else {
+            console.warn("Aviso: Falha ao enviar para o webhook n8n:", webhookResponse.statusText);
+          }
+        } catch (webhookError) {
+          console.warn("Aviso: Erro ao enviar para o webhook n8n:", webhookError);
+          // Não bloqueia o fluxo principal se o webhook falhar
         }
-      } catch (webhookError) {
-        console.warn("Aviso: Erro ao enviar para o webhook n8n:", webhookError);
-        // Não bloqueia o fluxo principal se o webhook falhar
       }
 
     } catch (error) {
@@ -1224,14 +1481,15 @@ const QuizPageController = () => {
     
   };
 
-  const handleQuizLogicComplete = (archetype, quizResultData) => {
+  const handleQuizLogicComplete = async (archetype, quizResultData) => {
     setFinalArchetype(archetype);
     const exampleUserProfileData = {
         mainGoal: "Futuro da Família", investmentRange: "€100K-€500K",
         timeHorizon: "6-18 meses", maritalStatus: "Solteiro(a)"
     };
     setQuizResultDataForBackend({ ...quizResultData, userProfileData: exampleUserProfileData });
-    setQuizState('emailCollection'); 
+    // Ir para coleta de dados adicionais
+    setQuizState('additionalData'); 
   };
   
   // --- ALTERAÇÃO 2: Garantir que o envio aconteça ANTES de ir para a página de resultados ---
@@ -1251,53 +1509,59 @@ const QuizPageController = () => {
     setFinalArchetype(null);
     setQuizResultDataForBackend(null);
     setResultIds({ submissionId: null, sessionId: null });
-    setQuizState('quiz'); // MODIFICAÇÃO: Reiniciar diretamente para o quiz
+    setQuizState('initialData'); // Reiniciar na coleta de dados
   };
   
-  if (quizState === 'results' && finalArchetype) { 
-      return <ResultsPage 
-                archetype={finalArchetype} 
-                onRestart={handleRestartQuiz} 
-                quizResultDataForBackend={quizResultDataForBackend}
-                submissionId={resultIds.submissionId}
-                sessionId={resultIds.sessionId} // Passando o novo ID
-            />; 
+  if (quizState === 'initialData') {
+    return <InitialDataCollection onDataSubmitted={handleInitialDataSubmitted} />;
   }
 
-  if (quizState === 'quiz') { 
-    return <Quiz onQuizComplete={handleQuizLogicComplete} initialAnswers={{}} initialQuestionIndex={0} />; 
+  if (quizState === 'quiz') {
+    return <Quiz onQuizComplete={handleQuizLogicComplete} initialAnswers={{}} initialQuestionIndex={0} />;
   }
+
+  if (quizState === 'additionalData') {
+    return <AdditionalDataCollection onDataSubmitted={handleAdditionalDataSubmitted} />;
+  }
+
+  if (quizState === 'results') {
+    console.log('🔍 Estado de resultados:', { finalArchetype, quizResultDataForBackend, resultIds });
+
+    if (finalArchetype) {
+      return <ResultsPage
+                archetype={finalArchetype}
+                onRestart={handleRestartQuiz}
+                quizResultDataForBackend={quizResultDataForBackend}
+                submissionId={resultIds.submissionId}
+                sessionId={resultIds.sessionId}
+              />;
+    } else {
+      return <p className="text-center text-[#CCCCCC] p-10">Processando resultados...</p>;
+    }
+  }
+
   if (quizState === 'emailCollection') {
-    return <EmailCollectionPage 
-              onSubmitEmail={handleEmailSubmittedOrSkipped} 
+    return <EmailCollectionPage
+              onSubmitEmail={handleEmailSubmittedOrSkipped}
               onSkip={handleEmailSubmittedOrSkipped}
            />;
   }
-  if (quizState === 'results' && finalArchetype) { 
-    return <ResultsPage archetype={finalArchetype} onRestart={handleRestartQuiz} quizResultDataForBackend={quizResultDataForBackend} />; 
-  }
-  
+
   return <p className="text-center text-[#CCCCCC] p-10">Carregando...</p>; 
 };
 
 
 // --- APP MÍNIMO PARA RENDERIZAR O QUIZ ---
-export default function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  // Inicializa allowQuizRender baseado na presença imediata do estado da rota.
-  // Isso pode ajudar a evitar um piscar inicial se o estado já estiver disponível.
-  const [allowQuizRender, setAllowQuizRender] = useState(!!location.state?.fromHomepage);
-
+export default function QuizPage() {
   useEffect(() => {
     const script = document.createElement('script');
     script.id = 'tailwind-script';
-    script.src = 'https://cdn.tailwindcss.com'; 
+    script.src = 'https://cdn.tailwindcss.com';
     document.head.appendChild(script);
-    
+
     script.onload = () => {
-        if (typeof tailwind !== 'undefined') {
-            tailwind.config = {
+        if (typeof window.tailwind !== 'undefined') {
+            window.tailwind.config = {
                 theme: {
                     extend: {
                         fontFamily: {
@@ -1318,36 +1582,11 @@ export default function App() {
     };
   }, []);
 
-  // Efeito para verificar o acesso e redirecionar se necessário
-  useEffect(() => {
-    if (location.state?.fromHomepage) {
-      setAllowQuizRender(true); // Permite a renderização do quiz
-    } else {
-      // Se não veio da homepage e está tentando acessar /quiz diretamente
-      if (location.pathname === '/quiz') {
-        navigate('/', { replace: true }); // Redireciona para a homepage
-      }
-      // Se por acaso este componente for renderizado em outra rota sem o estado,
-      // ou se o estado for perdido, impede a renderização do quiz.
-      setAllowQuizRender(false);
-    }
-  }, [location.state, location.pathname, navigate]);
-
   return (
     <>
       <GlobalStyles />
-      <AppHeader /> {/* MODIFICAÇÃO: Adicionando o menu superior aqui */}
-      <div id="root"> {/* Este div é estilizado globalmente para o padding do header */}
-        {location.pathname === '/quiz' ? ( // Renderiza conteúdo específico do quiz apenas na rota /quiz
-          allowQuizRender ? (
-            <QuizPageController />
-          ) : (
-            // Mostra uma mensagem de carregamento/verificação enquanto a lógica de acesso é processada
-            // Se o redirecionamento ocorrer, este conteúdo não será exibido por muito tempo.
-            <p className="text-center text-[#CCCCCC] p-10">Verificando acesso ao quiz...</p>
-          )
-        ) : null /* Em rotas diferentes de /quiz, este componente App não deve renderizar o QuizPageController */}
-      </div>
+      <AppHeader />
+      <QuizPageController />
     </>
   );
 }

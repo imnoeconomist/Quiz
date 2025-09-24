@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'; // Adicione useEffect aqui
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './HomePage';
 import QuizPage from './QuizPage';
 
 function App() {
@@ -62,7 +61,7 @@ function App() {
     <>
       {/* Seus estilos globais (do global.css importado em main.jsx) devem estar aplicados */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<QuizPage />} />
         <Route path="/quiz" element={<QuizPage />} />
       </Routes>
     </>
